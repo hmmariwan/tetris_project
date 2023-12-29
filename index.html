@@ -38,6 +38,13 @@
             Score : <div id="score">0</div>
         </div>
 
+        <div>
+            <button id="move-left">Left</button>
+            <button id="move-right">Right</button>
+            <button id="rotate">Rotate</button>
+            <button id="move-down">Down</button>
+        </div>
+
         <script>
             /*creating the I Tetris shape which is a straight line.
             It occupies a 4x1(4 squares long and 1 square wide) or
@@ -624,11 +631,30 @@
                 }
             }
 
-            // Add event listeners for touch events
+            // adding event listeners for touch events
             document.addEventListener('touchstart', handleTouchStart, false);
             document.addEventListener('touchend', handleTouchEnd, false);
 
 
+            // adding event listeners to control buttons
+            document.getElementById("move-left").addEventListener("click", function() {
+                p.moveLeft();
+                dropStart = Date.now();
+            });
+
+            document.getElementById("move-right").addEventListener("click", function() {
+                p.moveRight();
+                dropStart = Date.now();
+            });
+
+            document.getElementById("rotate").addEventListener("click", function() {
+                p.rotate();
+                dropStart = Date.now();
+            });
+
+            document.getElementById("move-down").addEventListener("click", function() {
+                p.moveDown();
+            });
 
         </script>
     </div>
