@@ -609,8 +609,10 @@
 
                 // Sample logic for left and right controls
                 let screenWidth = window.innerWidth;
+                let screenHeight = window.innerHeight;
                 let leftArea = screenWidth / 4; // Left quarter of the screen
                 let rightArea = screenWidth - (screenWidth / 4); // Right quarter of the screen
+                let bottomArea = screenHeight - (screenHeight / 4); // Bottom quarter of the screen
 
                 if (touchX < leftArea) {
                     // Perform action for left control (e.g., move left)
@@ -620,11 +622,17 @@
                     // Perform action for right control (e.g., move right)
                     p.moveRight();
                     dropStart = Date.now();
+                } else if (touchY > bottomArea) {
+                    // Perform action for bottom control (e.g., move down)
+                    p.moveDown();
+                } else {
+                    // Perform action for other controls (e.g., rotate)
+                    p.rotate();
+                    dropStart = Date.now();
                 }
 
                 // Additional logic for other touch-based controls can be implemented similarly
             });
-
 
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
