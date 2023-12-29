@@ -588,26 +588,7 @@
                 scoreElement.innerHTML = score;
             }
 
-            // Add event listeners to control buttons
-            document.getElementById("move-left").addEventListener("click", function() {
-                p.moveLeft();
-                dropStart = Date.now();
-            });
-
-            document.getElementById("move-right").addEventListener("click", function() {
-                p.moveRight();
-                dropStart = Date.now();
-            });
-
-            document.getElementById("rotate").addEventListener("click", function() {
-                p.rotate();
-                dropStart = Date.now();
-            });
-
-            document.getElementById("move-down").addEventListener("click", function() {
-                p.moveDown();
-            });
-
+            
 
 
             // Assuming 'p' is the Tetris piece object as defined in your existing code
