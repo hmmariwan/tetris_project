@@ -595,7 +595,7 @@
 
 
 
-            // Function to handle touch-based controls outside the button region
+            
             document.getElementById("tetris").addEventListener("touchstart", function(event) {
                 event.preventDefault(); // Prevent default touch behavior
 
@@ -607,32 +607,36 @@
                 // Determine the regions for touch controls based on your layout
                 // For example, check if the touch is in the left, right, top, or bottom area
 
-                // Sample logic for left and right controls
+                // Sample logic for left, right, top, and bottom controls
                 let screenWidth = window.innerWidth;
                 let screenHeight = window.innerHeight;
-                let leftArea = screenWidth / 4; // Left quarter of the screen
-                let rightArea = screenWidth - (screenWidth / 4); // Right quarter of the screen
-                let bottomArea = screenHeight - (screenHeight / 4); // Bottom quarter of the screen
+                let leftArea = screenWidth / 3; // Left third of the screen
+                let rightArea = (screenWidth / 3) * 2; // Right third of the screen
+                let bottomArea = (screenHeight / 5) * 4; // Bottom fifth of the screen
 
-                if (touchX < leftArea) {
-                    // Perform action for left control (e.g., move left)
-                    p.moveLeft();
-                    dropStart = Date.now();
-                } else if (touchX > rightArea) {
-                    // Perform action for right control (e.g., move right)
-                    p.moveRight();
-                    dropStart = Date.now();
-                } else if (touchY > bottomArea) {
+                if (touchY > bottomArea) {
                     // Perform action for bottom control (e.g., move down)
                     p.moveDown();
                 } else {
-                    // Perform action for other controls (e.g., rotate)
-                    p.rotate();
-                    dropStart = Date.now();
+                    if (touchX < leftArea) {
+                        // Perform action for left control (e.g., move left)
+                        p.moveLeft();
+                        dropStart = Date.now();
+                    } else if (touchX > rightArea) {
+                        // Perform action for right control (e.g., move right)
+                        p.moveRight();
+                        dropStart = Date.now();
+                    } else {
+                        // Perform action for top control (e.g., rotate)
+                        p.rotate();
+                        dropStart = Date.now();
+                    }
                 }
-
-                // Additional logic for other touch-based controls can be implemented similarly
             });
+
+
+
+
 
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
