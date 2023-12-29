@@ -38,6 +38,7 @@
             Score : <div id="score">0</div>
         </div>
 
+
         <div id="controls">
             <button id="move-left">Left</button>
             <button id="move-right">Right</button>
@@ -49,6 +50,9 @@
         <div id="no-touch" style="touch-action: none;">
             <!-- This section will prevent touch-based events -->
         </div>
+
+        
+
 
         <script>
             /*creating the I Tetris shape which is a straight line.
@@ -636,10 +640,10 @@
                 }
             }
 
-            // adding event listeners for touch events
-            document.addEventListener('touchstart', handleTouchStart, false);
-            document.addEventListener('touchend', handleTouchEnd, false);
-
+            // Function to handle touch events
+            document.getElementById("no-touch").addEventListener("touchstart", function(event) {
+                event.stopPropagation();
+            });
 
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
@@ -661,6 +665,7 @@
                 p.moveDown();
             });
 
+            
         </script>
     </div>
 </body>
