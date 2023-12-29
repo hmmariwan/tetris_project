@@ -38,7 +38,6 @@
             Score : <div id="score">0</div>
         </div>
 
-
         <div id="controls">
             <button id="move-left">Left</button>
             <button id="move-right">Right</button>
@@ -50,7 +49,7 @@
         <div id="touch-controls">
             <!-- This section will handle touch-based controls -->
         </div>
-        
+
         <script>
             /*creating the I Tetris shape which is a straight line.
             It occupies a 4x1(4 squares long and 1 square wide) or
@@ -593,51 +592,6 @@
                 scoreElement.innerHTML = score;
             }
 
-
-
-            
-            document.getElementById("tetris").addEventListener("touchstart", function(event) {
-                event.preventDefault(); // Prevent default touch behavior
-
-                // Get touch X and Y coordinates relative to the canvas
-                let rect = cvs.getBoundingClientRect();
-                let touchX = event.touches[0].clientX - rect.left;
-                let touchY = event.touches[0].clientY - rect.top;
-
-                // Determine the regions for touch controls based on your layout
-                // For example, check if the touch is in the left, right, top, or bottom area
-
-                // Sample logic for left, right, top, and bottom controls
-                let screenWidth = window.innerWidth;
-                let screenHeight = window.innerHeight;
-                let leftArea = screenWidth / 3; // Left third of the screen
-                let rightArea = (screenWidth / 3) * 2; // Right third of the screen
-                let bottomArea = (screenHeight / 5) * 4; // Bottom fifth of the screen
-
-                if (touchY > bottomArea) {
-                    // Perform action for bottom control (e.g., move down)
-                    p.moveDown();
-                } else {
-                    if (touchX < leftArea) {
-                        // Perform action for left control (e.g., move left)
-                        p.moveLeft();
-                        dropStart = Date.now();
-                    } else if (touchX > rightArea) {
-                        // Perform action for right control (e.g., move right)
-                        p.moveRight();
-                        dropStart = Date.now();
-                    } else {
-                        // Perform action for top control (e.g., rotate)
-                        p.rotate();
-                        dropStart = Date.now();
-                    }
-                }
-            });
-
-
-
-
-
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
                 p.moveLeft();
@@ -657,6 +611,7 @@
             document.getElementById("move-down").addEventListener("click", function() {
                 p.moveDown();
             });
+
 
 
         </script>
