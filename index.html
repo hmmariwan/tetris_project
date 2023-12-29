@@ -46,14 +46,11 @@
             <button id="move-down">Down</button>
         </div>
     
-        <!-- Create a section to prevent touch-based events -->
-        <div id="no-touch" style="touch-action: none;">
-            <!-- This section will prevent touch-based events -->
+            <!-- Create a section to handle touch-based controls outside the button region -->
+        <div id="touch-controls">
+            <!-- This section will handle touch-based controls -->
         </div>
-
         
-
-
         <script>
             /*creating the I Tetris shape which is a straight line.
             It occupies a 4x1(4 squares long and 1 square wide) or
@@ -597,54 +594,42 @@
             }
 
 
-            // Variables to track touch events
-            let touchStartX = 0;
-            let touchStartY = 0;
-            let touchEndX = 0;
-            let touchEndY = 0;
 
-            // Function to handle touch start event
-            function handleTouchStart(event) {
-                touchStartX = event.touches[0].clientX;
-                touchStartY = event.touches[0].clientY;
-            }
+            // Function to handle touch-based controls outside the button region
+            document.getElementById("touch-controls").addEventListener("touchstart", function(event) {
+                event.preventDefault(); // Prevent default touch behavior
+                let touchX = event.touches[0].clientX; // Get touch X-coordinate
+                let touchY = event.touches[0].clientY; // Get touch Y-coordinate
 
-            // Function to handle touch end event
-            function handleTouchEnd(event) {
-                touchEndX = event.changedTouches[0].clientX;
-                touchEndY = event.changedTouches[0].clientY;
+                // Define areas on the screen for touch-based controls
+                // For example, check if the touch is in the left, right, top, or bottom area
 
-                // Calculate the difference in coordinates
-                let deltaX = touchEndX - touchStartX;
-                let deltaY = touchEndY - touchStartY;
+                // Sample logic for left and right controls
+                let screenWidth = window.innerWidth;
+                let screenHeight = window.innerHeight;
 
-                // Determine the direction based on swipe gesture
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    // Horizontal swipe detected
-                    if (deltaX > 0) {
-                        // Swipe towards the right
-                        p.moveRight();
-                    } else {
-                        // Swipe towards the left
-                        p.moveLeft();
-                    }
-                } else {
-                    // Vertical swipe detected
-                    if (deltaY > 0) {
-                        // Swipe downwards
-                        p.moveDown();
-                    } else {
-                        // Swipe upwards (optional action, e.g., rotate)
-                        p.rotate();
-                    }
+                // Define the regions for left and right controls (adjust these based on your layout)
+                let leftArea = screenWidth / 4; // Left quarter of the screen
+                let rightArea = (screenWidth / 4) * 3; // Right quarter of the screen
+
+                if (touchX < leftArea) {
+                    // Perform action for left control (e.g., move left)
+                    p.moveLeft();
+                    dropStart = Date.now();
+                } else if (touchX > rightArea) {
+                    // Perform action for right control (e.g., move right)
+                    p.moveRight();
+                    dropStart = Date.now();
                 }
-            }
 
-            // Function to handle touch events
-            document.getElementById("no-touch").addEventListener("touchstart", function(event) {
-                event.stopPropagation();
+                // Additional logic for other touch-based controls can be implemented similarly
+
+                // You can also define areas for rotation or downward movement based on touchY
             });
 
+
+
+            
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
                 p.moveLeft();
@@ -665,7 +650,7 @@
                 p.moveDown();
             });
 
-            
+
         </script>
     </div>
 </body>
