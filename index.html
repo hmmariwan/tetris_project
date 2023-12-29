@@ -610,7 +610,7 @@
                 // Sample logic for left and right controls
                 let screenWidth = window.innerWidth;
                 let leftArea = screenWidth / 4; // Left quarter of the screen
-                let rightArea = (screenWidth / 4) * 3; // Right quarter of the screen
+                let rightArea = screenWidth - (screenWidth / 4); // Right quarter of the screen
 
                 if (touchX < leftArea) {
                     // Perform action for left control (e.g., move left)
