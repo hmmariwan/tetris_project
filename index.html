@@ -38,11 +38,16 @@
             Score : <div id="score">0</div>
         </div>
 
-        <div>
+        <div id="controls">
             <button id="move-left">Left</button>
             <button id="move-right">Right</button>
             <button id="rotate">Rotate</button>
             <button id="move-down">Down</button>
+        </div>
+    
+        <!-- Create a section to prevent touch-based events -->
+        <div id="no-touch" style="touch-action: none;">
+            <!-- This section will prevent touch-based events -->
         </div>
 
         <script>
@@ -636,7 +641,7 @@
             document.addEventListener('touchend', handleTouchEnd, false);
 
 
-            // adding event listeners to control buttons
+            // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
                 p.moveLeft();
                 dropStart = Date.now();
