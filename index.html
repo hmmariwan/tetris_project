@@ -596,19 +596,19 @@
 
 
             // Function to handle touch-based controls outside the button region
-            document.getElementById("touch-controls").addEventListener("touchstart", function(event) {
+            document.getElementById("tetris").addEventListener("touchstart", function(event) {
                 event.preventDefault(); // Prevent default touch behavior
-                let touchX = event.touches[0].clientX; // Get touch X-coordinate
-                let touchY = event.touches[0].clientY; // Get touch Y-coordinate
 
-                // Define areas on the screen for touch-based controls
+                // Get touch X and Y coordinates relative to the canvas
+                let rect = cvs.getBoundingClientRect();
+                let touchX = event.touches[0].clientX - rect.left;
+                let touchY = event.touches[0].clientY - rect.top;
+
+                // Determine the regions for touch controls based on your layout
                 // For example, check if the touch is in the left, right, top, or bottom area
 
                 // Sample logic for left and right controls
                 let screenWidth = window.innerWidth;
-                let screenHeight = window.innerHeight;
-
-                // Define the regions for left and right controls (adjust these based on your layout)
                 let leftArea = screenWidth / 4; // Left quarter of the screen
                 let rightArea = (screenWidth / 4) * 3; // Right quarter of the screen
 
@@ -623,13 +623,9 @@
                 }
 
                 // Additional logic for other touch-based controls can be implemented similarly
-
-                // You can also define areas for rotation or downward movement based on touchY
             });
 
 
-
-            
             // Add event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
                 p.moveLeft();
