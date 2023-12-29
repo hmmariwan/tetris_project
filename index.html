@@ -580,6 +580,56 @@
                 scoreElement.innerHTML = score;
             }
 
+
+            // Variables to track touch events
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let touchEndY = 0;
+
+            // Function to handle touch start event
+            function handleTouchStart(event) {
+                touchStartX = event.touches[0].clientX;
+                touchStartY = event.touches[0].clientY;
+            }
+
+            // Function to handle touch end event
+            function handleTouchEnd(event) {
+                touchEndX = event.changedTouches[0].clientX;
+                touchEndY = event.changedTouches[0].clientY;
+
+                // Calculate the difference in coordinates
+                let deltaX = touchEndX - touchStartX;
+                let deltaY = touchEndY - touchStartY;
+
+                // Determine the direction based on swipe gesture
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    // Horizontal swipe detected
+                    if (deltaX > 0) {
+                        // Swipe towards the right
+                        p.moveRight();
+                    } else {
+                        // Swipe towards the left
+                        p.moveLeft();
+                    }
+                } else {
+                    // Vertical swipe detected
+                    if (deltaY > 0) {
+                        // Swipe downwards
+                        p.moveDown();
+                    } else {
+                        // Swipe upwards (optional action, e.g., rotate)
+                        p.rotate();
+                    }
+                }
+            }
+
+            // Add event listeners for touch events
+            document.addEventListener('touchstart', handleTouchStart, false);
+            document.addEventListener('touchend', handleTouchEnd, false);
+
+
+
         </script>
     </div>
 </body>
