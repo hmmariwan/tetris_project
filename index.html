@@ -52,6 +52,12 @@
             <button class="btn" id="rotate">Rotate</button>
             <button class="btn" id="move-down">Down</button>
         </div>
+
+        <div>
+            <button id="speed-up">Speed up</button>
+            <button id="speed-value">Speed: </button>
+            <button id="speed-down">Speed down</button>
+        </div>
     
 
         <script>
@@ -221,6 +227,10 @@
             const COL = COLUMN = 10;
             const SQ = squareSize = 20;
             const VACANT = "WHITE"; // color of an empty square
+
+            const speedLevels = [1000, 800, 600, 400]; // Speed levels in milliseconds
+            let currentSpeedLevel = 0; // Index of the current speed level
+
 
             function drawSquare(x,y,color){
                 ctx.fillStyle = color;
@@ -498,7 +508,8 @@
                 if (!isPaused) {
                     let now = Date.now();
                     let delta = now - dropStart;
-                    if (delta > 1000) {
+                    let speed = speedLevels[currentSpeedLevel]; // Get the current speed level interval
+                    if (delta > speed) {
                         p.moveDown();
                         dropStart = Date.now();
                     }
@@ -511,9 +522,10 @@
                         text: "Click the Start/Pause button to restart the game again!",
                         icon: "information",
                         confirmButtonText: "OK"
-                    })
+                    });
                 }
             }
+
 
             drop(); // Start the game initially
 
@@ -560,6 +572,32 @@
             document.getElementById("move-down").addEventListener("click", function() {
                 p.moveDown();
             });
+
+
+            // Add event listeners to change speed levels
+            document.getElementById("speed-up").addEventListener("click", function() {
+                if (currentSpeedLevel < speedLevels.length - 1) {
+                    currentSpeedLevel++;
+                    updateSpeedValue();
+                }
+            });
+
+            document.getElementById("speed-down").addEventListener("click", function() {
+                if (currentSpeedLevel > 0) {
+                    currentSpeedLevel--;
+                    updateSpeedValue();
+                }
+            });
+
+            // Function to update the displayed speed value on the button
+            function updateSpeedValue() {
+                const speedButton = document.getElementById("speed-value");
+                speedButton.textContent = `Speed: ${speedLevels[currentSpeedLevel]} ms`; // Update button label
+            }
+
+            // Call the function to initially set the speed value on the button
+            updateSpeedValue();
+
 
         </script>
     </div>
