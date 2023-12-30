@@ -36,6 +36,9 @@
             margin-bottom: 5px;
             height: 30px;
         }
+        .speed-div{
+            margin-top: 10px;
+        }
     </style>
 
     <div>
@@ -48,12 +51,12 @@
         
         <div id="controls">
             <button class="btn" id="move-left">Left</button>
-            <button class="btn" id="move-right">Right</button>
-            <button class="btn" id="rotate">Rotate</button>
             <button class="btn" id="move-down">Down</button>
+            <button class="btn" id="rotate">Rotate</button>
+            <button class="btn" id="move-right">Right</button>
         </div>
 
-        <div>
+        <div class="speed-div">
             <button id="speed-up">Speed up</button>
             <button id="speed-value">Speed: </button>
             <button id="speed-down">Speed down</button>
@@ -228,7 +231,7 @@
             const SQ = squareSize = 20;
             const VACANT = "WHITE"; // color of an empty square
 
-            const speedLevels = [1000, 800, 600, 400]; // Speed levels in milliseconds
+            const speedLevels = [1000, 800, 600, 400,300,200,100]; // Speed levels in milliseconds
             let currentSpeedLevel = 0; // Index of the current speed level
 
 
