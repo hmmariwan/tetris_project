@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tetris Game</title>
-    <!--adding the SweetAlert CDN for displaying a SweetAlert dialog box -->
+    <!-- adding the SweetAlert JS for displaying a SweetAlert dialog box -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- adding the SweetAlert CSS for styling the alert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -28,7 +30,7 @@
             display: block;
             margin:0 auto;
         }
-        .btn{
+        #controls{
             height: 50px;
             margin-top: 5px;
         }
@@ -39,6 +41,22 @@
         .speed-div{
             margin-top: 10px;
         }
+        .swal2-popup .swal2-actions:not(.swal2-loading) .swal2-styled:hover {
+            background-color: #007bff !important;
+        }
+        .game-over {
+            width: 430px ; 
+            height: 520px ; 
+        }
+        .pause-game{
+            width: 450px;
+            height: 320px;
+        }
+        .swal2-popup .swal2-confirm:focus {/*To remove the default outline or shadow from the "Restart" and 'OK' buttons*/
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
     </style>
 
     <div>
@@ -50,10 +68,10 @@
         <canvas id="tetris" width="200" height="400"></canvas>
         
         <div id="controls">
-            <button class="btn" id="move-left">Left</button>
-            <button class="btn" id="move-down">Down</button>
-            <button class="btn" id="rotate">Rotate</button>
-            <button class="btn" id="move-right">Right</button>
+            <button id="move-left">Left</button>
+            <button id="move-down">Down</button>
+            <button id="rotate">Rotate</button>
+            <button id="move-right">Right</button>
         </div>
 
         <div class="speed-div">
@@ -383,7 +401,7 @@
             }
 
             let score = 0;
-
+            
             Piece.prototype.lock = function(){
                 for( r = 0; r < this.activeTetromino.length; r++){
                     for(c = 0; c < this.activeTetromino.length; c++){
@@ -395,9 +413,19 @@
                         if(this.y + r < 0){
                             Swal.fire({
                                 title: "Game Over",
-                                text: "You can play again.",
+                                text: `You scored: ${score}. If you click close,you will need a double click on Start/Pause to get this dialog box.` ,
                                 icon: "error",
-                                confirmButtonText: "Restart"
+                                //background: 'grey',
+                                confirmButtonText: "Restart",
+                                confirmButtonColor: "green",
+                                allowOutsideClick: false, // Prevent closing the modal by clicking outside
+                                showCancelButton: true, // Show the cancel button
+                                cancelButtonText: "Close", // Text for the cancel button 
+                                cancelButtonColor: "red",
+                                //reverseButtons: true,// uncommented to swap the position of Restart and Close buttons
+                                customClass: {
+                                    popup: 'game-over' 
+                                }
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     resetGame(); // Call resetGame function to restart the game
@@ -419,7 +447,7 @@
                     }
                     if(isRowFull){
                         // if the row is full
-                        // we move down all the rows above it
+                        // move down all the rows above it
                         for( y = r; y > 1; y--){
                             for( c = 0; c < COL; c++){
                                 board[y][c] = board[y-1][c];
@@ -522,22 +550,26 @@
                 } else {
                     Swal.fire({
                         title: "Game has been paused.",
-                        text: "Click the Start/Pause button to restart the game again!",
+                        text: `You have scored ${score}. Click the Start/Pause button to restart the game again!`,
                         icon: "information",
-                        confirmButtonText: "OK"
+                        confirmButtonText: "OK",
+                        confirmButtonColor:'green',
+                        customClass:{
+                            popup: 'pause-game'
+                        }
                     });
                 }
             }
 
 
             drop(); // Start the game initially
-
-            // Function to reset the game
+            
             function resetGame() {
                 // Clear the board
                 for (let r = 0; r < ROW; r++) {
                     for (let c = 0; c < COL; c++) {
                         board[r][c] = VACANT;
+                        drawSquare(c, r, VACANT); // Clear the drawn squares on the canvas
                     }
                 }
 
