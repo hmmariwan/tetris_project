@@ -243,16 +243,16 @@
             ];
 
             const cvs = document.getElementById("tetris");
-            const ctx = cvs.getContext("2d");// Get the 2D rendering context
+            const ctx = cvs.getContext("2d");// to get the 2D rendering context
             const scoreElement = document.getElementById("score");
 
             const ROW = 20;
             const COL = COLUMN = 10;
             const SQ = squareSize = 20;
-            const VACANT = "WHITE"; // color of an empty square
+            const VACANT = "WHITE"; // to color of an empty square
 
             const speedLevels = [1000, 800, 600, 400,300,200,100]; // Speed levels in milliseconds
-            let currentSpeedLevel = 0; // Index of the current speed level
+            let currentSpeedLevel = 0; // to index of the current speed level
 
 
             function drawSquare(x,y,color){
@@ -263,7 +263,7 @@
                 ctx.strokeRect(x*SQ,y*SQ,SQ,SQ);
             }
 
-            // create the board
+            // to create the board
 
             let board = [];
             for( r = 0; r <ROW; r++){
@@ -273,7 +273,7 @@
                 }
             }
 
-            // draw the board
+            // to draw the board
             function drawBoard(){
                 for( r = 0; r <ROW; r++){
                     for(c = 0; c < COL; c++){
@@ -296,7 +296,7 @@
                 [J,"orange"]
             ];
 
-            // generate random pieces
+            // to generate random pieces
 
             function randomPiece(){
                 let r = randomN = Math.floor(Math.random() * PIECES.length) // 0 -> 6
@@ -305,26 +305,26 @@
 
             let p = randomPiece();
 
-            // The Object Piece
+            // The object piece
 
             function Piece(tetromino,color){
                 this.tetromino = tetromino;
                 this.color = color;
                 
-                this.tetrominoN = 0; // we start from the first pattern
+                this.tetrominoN = 0; // to start from the first pattern
                 this.activeTetromino = this.tetromino[this.tetrominoN];
                 
-                // we need to control the pieces
+                // to control the pieces
                 this.x = 3;
                 this.y = -1;
             }
 
-            // fill function
+            // to fill function
 
             Piece.prototype.fill = function(color){
                 for( r = 0; r < this.activeTetromino.length; r++){
                     for(c = 0; c < this.activeTetromino.length; c++){
-                        // we draw only occupied squares
+                        // to draw only occupied squares
                         if( this.activeTetromino[r][c]){
                             drawSquare(this.x + c,this.y + r, color);
                         }
@@ -332,20 +332,20 @@
                 }
             }
 
-            // draw a piece to the board
+            // to draw a piece to the board
 
             Piece.prototype.draw = function(){
                 this.fill(this.color);
             }
 
-            // undraw a piece
+            // to undraw a piece
 
 
             Piece.prototype.unDraw = function(){
                 this.fill(VACANT);
             }
 
-            // move Down the piece
+            // to move the piece to down
 
             Piece.prototype.moveDown = function(){
                 if(!this.collision(0,1,this.activeTetromino)){
@@ -353,14 +353,14 @@
                     this.y++;
                     this.draw();
                 }else{
-                    // we lock the piece and generate a new one
+                    // to lock the piece and generate a new one
                     this.lock();
                     p = randomPiece();
                 }
                 
             }
 
-            // move Right the piece
+            // to move the piece to right
             Piece.prototype.moveRight = function(){
                 if(!this.collision(1,0,this.activeTetromino)){
                     this.unDraw();
@@ -369,7 +369,7 @@
                 }
             }
 
-            // move Left the piece
+            // to move the piece to left
             Piece.prototype.moveLeft = function(){
                 if(!this.collision(-1,0,this.activeTetromino)){
                     this.unDraw();
@@ -378,7 +378,7 @@
                 }
             }
 
-            // rotate the piece
+            // to rotate the piece
             Piece.prototype.rotate = function(){
                 let nextPattern = this.tetromino[(this.tetrominoN + 1)%this.tetromino.length];
                 let kick = 0;
@@ -386,10 +386,10 @@
                 if(this.collision(0,0,nextPattern)){
                     if(this.x > COL/2){
                         // it's the right wall
-                        kick = -1; // we need to move the piece to the left
+                        kick = -1; // to move the piece to the left
                     }else{
                         // it's the left wall
-                        kick = 1; // we need to move the piece to the right
+                        kick = 1; // to move the piece to the right
                     }
                 }
                 
@@ -407,7 +407,7 @@
             Piece.prototype.lock = function(){
                 for( r = 0; r < this.activeTetromino.length; r++){
                     for(c = 0; c < this.activeTetromino.length; c++){
-                        // we skip the vacant squares
+                        // skipping the vacant squares
                         if( !this.activeTetromino[r][c]){
                             continue;
                         }
@@ -420,9 +420,9 @@
                                 //background: 'grey',
                                 confirmButtonText: "Restart",
                                 confirmButtonColor: "green",
-                                allowOutsideClick: false, // Prevent closing the modal by clicking outside
-                                showCancelButton: true, // Show the cancel button
-                                cancelButtonText: "Close", // Text for the cancel button 
+                                allowOutsideClick: false, // to prevent closing the modal by clicking outside
+                                showCancelButton: true, //to show the cancel button
+                                cancelButtonText: "Close", // Texting for the cancel button 
                                 cancelButtonColor: "red",
                                 //reverseButtons: true,// uncommented to swap the position of Restart and Close buttons
                                 customClass: {
@@ -430,18 +430,18 @@
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    resetGame(); // Call resetGame function to restart the game
+                                    resetGame(); // Calling resetGame function to restart the game
                                 }
                             });
-                            // stop request animation frame
+                            // stopping request animation frame
                             gameOver = true;
                             break;
                         }
-                        // we lock the piece
+                        // to lock the piece
                         board[this.y+r][this.x+c] = this.color;
                     }
                 }
-                // remove full rows
+                // to remove full rows
                 for(r = 0; r < ROW; r++){
                     let isRowFull = true;
                     for( c = 0; c < COL; c++){
@@ -475,7 +475,7 @@
             Piece.prototype.collision = function(x,y,piece){
                 for( r = 0; r < piece.length; r++){
                     for(c = 0; c < piece.length; c++){
-                        // if the square is empty, we skip it
+                        // if the square is empty, skip it
                         if(!piece[r][c]){
                             continue;
                         }
@@ -483,7 +483,6 @@
                         let newX = this.x + c + x;
                         let newY = this.y + r + y;
                         
-                        // conditions
                         if(newX < 0 || newX >= COL || newY >= ROW){
                             return true;
                         }
@@ -541,7 +540,7 @@
                 if (!isPaused) {
                     let now = Date.now();
                     let delta = now - dropStart;
-                    let speed = speedLevels[currentSpeedLevel]; // Get the current speed level interval
+                    let speed = speedLevels[currentSpeedLevel]; // to get the current speed level interval
                     if (delta > speed) {
                         p.moveDown();
                         dropStart = Date.now();
@@ -566,33 +565,33 @@
             }
 
 
-            drop(); // Start the game initially
+            drop(); // to start the game initially
             
             function resetGame() {
-                // Clear the board
+                // to clear the board
                 for (let r = 0; r < ROW; r++) {
                     for (let c = 0; c < COL; c++) {
                         board[r][c] = VACANT;
-                        drawSquare(c, r, VACANT); // Clear the drawn squares on the canvas
+                        drawSquare(c, r, VACANT); // to clear the drawn squares on the canvas
                     }
                 }
 
-                // Reset score
+                // to reset score
                 score = 0;
                 scoreElement.innerHTML = score;
 
-                // Generate a new random piece
+                // to generate a new random piece
                 p = randomPiece();
 
-                // Reset game over flag
+                // to reset game over flag
                 gameOver = false;
 
-                // Resume the drop loop
+                // to resume the drop loop
                 isPaused = false;
                 drop();
             }
 
-            // Add event listeners to control buttons
+            // Adding event listeners to control buttons
             document.getElementById("move-left").addEventListener("click", function() {
                 p.moveLeft();
                 dropStart = Date.now();
@@ -613,7 +612,7 @@
             });
 
 
-            // Add event listeners to change speed levels
+            // Adding event listeners to change speed levels
             document.getElementById("speed-up").addEventListener("click", function() {
                 if (currentSpeedLevel < speedLevels.length - 1) {
                     currentSpeedLevel++;
@@ -636,7 +635,6 @@
 
             // Call the function to initially set the speed value on the button
             updateSpeedValue();
-
 
         </script>
     </div>
