@@ -48,7 +48,7 @@
         }
         .game-over {
             width: 430px ; 
-            height: 520px ; 
+            height: 530px ; 
         }
         .pause-game{
             width: 450px;
@@ -84,11 +84,12 @@
     
 
         <script>
-            /*creating the I Tetris shape which is a straight line.
+            /* creating the I Tetris shape which is a straight line.
             It occupies a 4x1(4 squares long and 1 square wide) or
-            1x4(1 square wide and 4 squares tall) in the game grid
-            since it can be oriented horizontally and vertically.
-            It has 4 outer arrays and each of them has 4 inner arrays */
+            1x4(1 square wide and 4 squares tall) in the game grid.
+            Since it can be oriented horizontally and vertically,
+            it has 4 rotations so it has 4 outer arrays and 
+            each of them has 4 inner arrays because it occupies 4 squares */
             const I = [
             [
                 [0, 0, 0, 0],
@@ -116,7 +117,9 @@
             ]
             ];
 
-            const J = [//creating the J Tetris shape
+            const J = [/* creating the J Tetris shape which has 4 rotations so it
+                        has 4 outer arrays, 3 inner arrays for each rotation, 
+                        representing a 3x3 grid for each orientation.*/
                 [
                     [1, 0, 0],
                     [1, 1, 1],
@@ -139,8 +142,10 @@
                 ]
             ];
 
-            const L = [//creating the L Tetris shape
-                [/*first outer array which has 3 inner arrays.The 1's denotes a block
+            const L = [/* creating the L Tetris shape which has 4 rotations so it has 4
+                        outer arrays, 3 inner arrays for each rotation, 
+                        representing a 3x3 grid for each orientation.*/
+                [/* first outer array.The 1's denotes a block
                 of the L shape and 0's denotes an empty space.*/
                     [0, 0, 1],
                     [1, 1, 1],
@@ -164,7 +169,7 @@
             ];
 
             const O = [//creating the O Tetris shape.
-                [//the O shape is symmetrical so one outer array is required.
+                [//the O shape is symmetrical so one outer array is required which has 4 inner arrays
                     [0, 0, 0, 0],
                     [0, 1, 1, 0],
                     [0, 1, 1, 0],
@@ -196,7 +201,8 @@
                 ]
             ];
 
-            const T = [//creating the T Tetris shape
+            const T = [/* creating the T Tetris shape. It has 3 inner arrays for each rotation, 
+                        representing a 3x3 grid for each orientation.*/
                 [
                     [0, 1, 0],
                     [1, 1, 1],
@@ -219,7 +225,8 @@
                 ]
             ];
 
-            const Z = [//creating the Z Tetris shape
+            const Z = [/* creating the Z Tetris shape. It has 3 inner arrays for each rotation, 
+                        representing a 3x3 grid for each orientation.*/
                 [
                     [1, 1, 0],
                     [0, 1, 1],
@@ -249,22 +256,21 @@
             const ROW = 20;
             const COL = COLUMN = 10;
             const SQ = squareSize = 20;
-            const VACANT = "WHITE"; // to color of an empty square
+            const VACANT = "white"; // to color of an empty square
 
-            const speedLevels = [1000, 800, 600, 400,300,200,100]; // Speed levels in milliseconds
+            const speedLevels = [1000,800,600,400,300,200,100]; // Speed levels in milliseconds
             let currentSpeedLevel = 0; // to index of the current speed level
 
-
+            //creating a function to draw a square
             function drawSquare(x,y,color){
                 ctx.fillStyle = color;
                 ctx.fillRect(x*SQ,y*SQ,SQ,SQ);
 
-                ctx.strokeStyle = "BLACK";
+                ctx.strokeStyle = "black";
                 ctx.strokeRect(x*SQ,y*SQ,SQ,SQ);
             }
 
             // to create the board
-
             let board = [];
             for( r = 0; r <ROW; r++){
                 board[r] = [];
@@ -285,7 +291,6 @@
             drawBoard();
 
             // the Tetris shapes and their colors
-
             const PIECES = [
                 [Z,"red"],
                 [S,"green"],
@@ -297,16 +302,14 @@
             ];
 
             // to generate random pieces
-
             function randomPiece(){
-                let r = randomN = Math.floor(Math.random() * PIECES.length) // 0 -> 6
+                let r = randomN = Math.floor(Math.random() * PIECES.length) 
                 return new Piece( PIECES[r][0],PIECES[r][1]);
             }
 
             let p = randomPiece();
 
             // The object piece
-
             function Piece(tetromino,color){
                 this.tetromino = tetromino;
                 this.color = color;
@@ -320,7 +323,6 @@
             }
 
             // to fill function
-
             Piece.prototype.fill = function(color){
                 for( r = 0; r < this.activeTetromino.length; r++){
                     for(c = 0; c < this.activeTetromino.length; c++){
@@ -333,20 +335,16 @@
             }
 
             // to draw a piece to the board
-
             Piece.prototype.draw = function(){
                 this.fill(this.color);
             }
 
             // to undraw a piece
-
-
             Piece.prototype.unDraw = function(){
                 this.fill(VACANT);
             }
 
             // to move the piece to down
-
             Piece.prototype.moveDown = function(){
                 if(!this.collision(0,1,this.activeTetromino)){
                     this.unDraw();
@@ -396,7 +394,7 @@
                 if(!this.collision(kick,0,nextPattern)){
                     this.unDraw();
                     this.x += kick;
-                    this.tetrominoN = (this.tetrominoN + 1)%this.tetromino.length; // (0+1)%4 => 1
+                    this.tetrominoN = (this.tetrominoN + 1)%this.tetromino.length;
                     this.activeTetromino = this.tetromino[this.tetrominoN];
                     this.draw();
                 }
@@ -411,11 +409,13 @@
                         if( !this.activeTetromino[r][c]){
                             continue;
                         }
-                        // pieces to lock on top = game over
+                        scoreElement.innerHTML = score;
+                        // game over
                         if(this.y + r < 0){
-                            Swal.fire({
+                            if(score>30){
+                                Swal.fire({
                                 title: "Game Over",
-                                text: `You scored: ${score}. If you click close,you will need a double click on Start/Pause to get this dialog box.` ,
+                                text: `You scored: ${score} ${score > 50 ? '🏆' : '😊'}. If you click close,you will need a double click on Start/Pause to get this dialog box.` ,
                                 icon: "error",
                                 //background: 'grey',
                                 confirmButtonText: "Restart",
@@ -428,11 +428,34 @@
                                 customClass: {
                                     popup: 'game-over' 
                                 }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    resetGame(); // Calling resetGame function to restart the game
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        resetGame(); // Calling resetGame function to restart the game
+                                    }
+                                });
+                            }else{
+                                Swal.fire({
+                                title: "Game Over",
+                                text: `You scored: ${score} 😒. If you click close,you will need a double click on Start/Pause to get this dialog box.` ,
+                                icon: "error",
+                                //background: 'grey',
+                                confirmButtonText: "Restart",
+                                confirmButtonColor: "green",
+                                allowOutsideClick: false, // to prevent closing the modal by clicking outside
+                                showCancelButton: true, //to show the cancel button
+                                cancelButtonText: "Close", // Texting for the cancel button 
+                                cancelButtonColor: "red",
+                                //reverseButtons: true,// uncommented to swap the position of Restart and Close buttons
+                                customClass: {
+                                    popup: 'game-over' 
                                 }
-                            });
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        resetGame(); // Calling resetGame function to restart the game
+                                    }
+                                });
+                            }
+
                             // stopping request animation frame
                             gameOver = true;
                             break;
@@ -448,8 +471,7 @@
                         isRowFull = isRowFull && (board[r][c] != VACANT);
                     }
                     if(isRowFull){
-                        // if the row is full
-                        // move down all the rows above it
+                        // if the row is full, move down all the rows above it
                         for( y = r; y > 1; y--){
                             for( c = 0; c < COL; c++){
                                 board[y][c] = board[y-1][c];
@@ -471,7 +493,6 @@
             }
 
             // collision fucntion
-
             Piece.prototype.collision = function(x,y,piece){
                 for( r = 0; r < piece.length; r++){
                     for(c = 0; c < piece.length; c++){
@@ -500,7 +521,6 @@
             }
 
             // CONTROL the piece
-
             document.addEventListener("keydown",CONTROL);
 
             function CONTROL(event){
