@@ -249,13 +249,13 @@
                 ]
             ];
 
-            const cvs = document.getElementById("tetris");
-            const ctx = cvs.getContext("2d");// to get the 2D rendering context
+            const tetris = document.getElementById("tetris");
+            const context = tetris.getContext("2d");// to get the 2D rendering context
             const scoreElement = document.getElementById("score");
 
-            const ROW = 20;
-            const COL = COLUMN = 10;
-            const SQ = squareSize = 20;
+            const rows = 20;
+            const columns = 10;
+            const squareSize = 20;
             const VACANT = "white"; // to color of an empty square
 
             const speedLevels = [1000,800,600,400,300,200,100]; // Speed levels in milliseconds
@@ -263,26 +263,26 @@
 
             //creating a function to draw a square
             function drawSquare(x,y,color){
-                ctx.fillStyle = color;
-                ctx.fillRect(x*SQ,y*SQ,SQ,SQ);
+                context.fillStyle = color;
+                context.fillRect(x*squareSize, y*squareSize, squareSize, squareSize);
 
-                ctx.strokeStyle = "black";
-                ctx.strokeRect(x*SQ,y*SQ,SQ,SQ);
+                context.strokeStyle = "black";
+                context.strokeRect(x*squareSize,y*squareSize,squareSize,squareSize);
             }
 
             // to create the board
             let board = [];
-            for( r = 0; r <ROW; r++){
+            for( r = 0; r <rows; r++){
                 board[r] = [];
-                for(c = 0; c < COL; c++){
+                for(c = 0; c < columns; c++){
                     board[r][c] = VACANT;
                 }
             }
 
             // to draw the board
             function drawBoard(){
-                for( r = 0; r <ROW; r++){
-                    for(c = 0; c < COL; c++){
+                for( r = 0; r <rows; r++){
+                    for(c = 0; c < columns; c++){
                         drawSquare(c,r,board[r][c]);
                     }
                 }
@@ -291,7 +291,7 @@
             drawBoard();
 
             // the Tetris shapes and their colors
-            const PIECES = [
+            const pieces = [
                 [Z,"red"],
                 [S,"green"],
                 [T,"yellow"],
@@ -300,14 +300,6 @@
                 [I,"cyan"],
                 [J,"orange"]
             ];
-
-            // to generate random pieces
-            function randomPiece(){
-                let r = randomN = Math.floor(Math.random() * PIECES.length) 
-                return new Piece( PIECES[r][0],PIECES[r][1]);
-            }
-
-            let p = randomPiece();
 
             // The object piece
             function Piece(tetromino,color){
@@ -321,6 +313,14 @@
                 this.x = 3;
                 this.y = -1;
             }
+
+            // to generate random pieces
+            function randomPiece(){
+                let randomNumber = Math.floor(Math.random() * pieces.length) 
+                return new Piece( pieces[randomNumber][0],pieces[randomNumber][1]);
+            }
+
+            let p = randomPiece();
 
             // to fill function
             Piece.prototype.fill = function(color){
@@ -382,7 +382,7 @@
                 let kick = 0;
                 
                 if(this.collision(0,0,nextPattern)){
-                    if(this.x > COL/2){
+                    if(this.x > columns/2){
                         // it's the right wall
                         kick = -1; // to move the piece to the left
                     }else{
@@ -465,20 +465,20 @@
                     }
                 }
                 // to remove full rows
-                for(r = 0; r < ROW; r++){
+                for(r = 0; r < rows; r++){
                     let isRowFull = true;
-                    for( c = 0; c < COL; c++){
+                    for( c = 0; c < columns; c++){
                         isRowFull = isRowFull && (board[r][c] != VACANT);
                     }
                     if(isRowFull){
-                        // if the row is full, move down all the rows above it
+                        // if the rows is full, move down all the rows above it
                         for( y = r; y > 1; y--){
-                            for( c = 0; c < COL; c++){
+                            for( c = 0; c < columns; c++){
                                 board[y][c] = board[y-1][c];
                             }
                         }
-                        // the top row board[0][..] has no row above it
-                        for( c = 0; c < COL; c++){
+                        // the top rows board[0][..] has no rows above it
+                        for( c = 0; c < columns; c++){
                             board[0][c] = VACANT;
                         }
                         // increment the score
@@ -504,7 +504,7 @@
                         let newX = this.x + c + x;
                         let newY = this.y + r + y;
                         
-                        if(newX < 0 || newX >= COL || newY >= ROW){
+                        if(newX < 0 || newX >= columns || newY >= rows){
                             return true;
                         }
                         // skip newY < 0; board[-1] will crush our game
@@ -589,8 +589,8 @@
             
             function resetGame() {
                 // to clear the board
-                for (let r = 0; r < ROW; r++) {
-                    for (let c = 0; c < COL; c++) {
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < columns; c++) {
                         board[r][c] = VACANT;
                         drawSquare(c, r, VACANT); // to clear the drawn squares on the canvas
                     }
